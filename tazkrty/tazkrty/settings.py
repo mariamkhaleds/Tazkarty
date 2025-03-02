@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+#from mongoose import "mongoose"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -74,12 +75,35 @@ WSGI_APPLICATION = 'tazkrty.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'djongo',
+        'NAME': 'tazkarty',  # Database name in MongoDB
+        'CLIENT': {
+            'host': 'mongodb+srv://mariam:12345@cluster0.p3v58.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+            'authSource': 'admin',
+        }
     }
 }
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'djongo',  # Ensure you have installed `djongo`
+#         'NAME': 'tazkarty',  # Replace with your actual database name in MongoDB Atlas
+#         'CLIENT': {
+#             'host': 'mongodb+srv://mariam:12345@cluster0.p3v58.mongodb.net/tazkarty?retryWrites=true&w=majority',
+#             'authSource': 'admin',
+#         }
+#     }
+# }
 
 
 # Password validation

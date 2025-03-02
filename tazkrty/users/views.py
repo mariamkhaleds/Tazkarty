@@ -1,5 +1,8 @@
 from django.shortcuts import render , redirect
 from django.contrib.auth.forms import UserCreationForm
+#from django.shortcuts import render
+from .models import Event
+from datetime import datetime
 
 def register_view(request):
     if request.method == "POST":
@@ -12,3 +15,40 @@ def register_view(request):
     return render(request, "users/register.html",{"form":
                                                   form})
     
+
+
+
+
+def insert_event(request):
+    if request.method == "POST":
+        eventname = request.POST.get("eventname")
+        organizer_name = request.POST.get("organizer_name")
+        title = request.POST.get("title")
+        description = request.POST.get("description")
+        date_time = request.POST.get("date_time")
+        status = request.POST.get("status")
+        location = request.POST.get("location")
+        address = request.POST.get("address")
+        number_of_seats = request.POST.get("number_of_seats")
+
+        # Convert date_time string to datetime object
+        date_time = datetime.strptime(date_time, "%Y-%m-%dT%H:%M")
+
+        # Save to database
+        event = Event(
+            eventname=eventname,
+            organizer_name=organizer_name,
+            title=title,
+            description=description,
+            date_time=date_time,
+            status=status,
+            location=location,
+            address=address,
+            number_of_seats=int(number_of_seats)
+        )
+        event.save()
+
+        return render(request, "users/Add_Event.html", {"message": "Event inserted successfully!"})
+
+    return render(request, "users/Add_Event.html")
+
