@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
+    'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'tazkrty.urls'
@@ -87,10 +90,15 @@ DATABASES = {
         'ENGINE': 'djongo',
         'NAME': 'tazkarty',  # Database name in MongoDB
         'CLIENT': {
-            'host': 'mongodb+srv://mariam:12345@cluster0.p3v58.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+            'host': 'mongodb+srv://Hana:123hana456@cluster0.p3v58.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
             'authSource': 'admin',
         }
+    },
+    'users_db': {  # SQLite
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
+
 }
 
 
@@ -146,3 +154,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+DATABASE_ROUTERS = ['users.routers.AuthRouter'] 
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
