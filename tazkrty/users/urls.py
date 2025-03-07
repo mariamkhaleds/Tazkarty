@@ -10,4 +10,4 @@ urlpatterns = [
       #path('history/<str:email>/', views.get_user_history, name="history"),
     # path('history/', views.history_page, name="history_page"),
     path('history/<str:email>/', views.booking_history, name='booking_history'),
-    
+]    
