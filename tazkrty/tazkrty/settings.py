@@ -28,17 +28,21 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+DATABASE_ROUTERS = ['users.routers.AuthRouter'] 
+
+
+AUTH_USER_MODEL = 'users.customusers'
 
 # Application definition
 
 INSTALLED_APPS = [
+    'users',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users',
     'rest_framework',
     'corsheaders',
 ]
@@ -156,7 +160,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-DATABASE_ROUTERS = ['users.routers.AuthRouter'] 
 
 
 CORS_ALLOWED_ORIGINS = [

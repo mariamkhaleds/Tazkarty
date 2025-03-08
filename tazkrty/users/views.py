@@ -1,6 +1,6 @@
 from django.shortcuts import render , redirect
 from django.contrib.auth.forms import UserCreationForm
-from .models import Event
+####from .models import Event
 from datetime import datetime
 from rest_framework import status
 from rest_framework.response import Response
@@ -31,6 +31,7 @@ def user_registration(request):
 
 
 
+"""""
 
 def insert_event(request):
     if request.method == "POST":
@@ -65,7 +66,7 @@ def insert_event(request):
 
     return render(request, "users/Add_Event.html")
 
-
+"""
 # def get_booking_history(request):
 #     email = request.GET.get("email")
 
@@ -95,6 +96,7 @@ def insert_event(request):
 #     """Render the HTML template for booking history lookup."""
 #     return render(request, "users/history.html")
 
+"""""
 from django.shortcuts import render
 from pymongo import MongoClient
 from django.conf import settings
@@ -108,3 +110,4 @@ def booking_history(request, email):
 
     return render(request, 'users/history.html', {'bookings': bookings})
 
+"""""
