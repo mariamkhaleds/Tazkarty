@@ -19,7 +19,8 @@ from . import views
 from django.urls import path, include
 
 urlpatterns = [
-    path('', views.homepage),
+    path('', include('events.urls')),
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
+    # path('events/', include('events.urls')),
 ]
