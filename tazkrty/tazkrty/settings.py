@@ -28,9 +28,24 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+DATABASE_ROUTERS = ['users.routers.AuthRouter'] 
+
+
+AUTH_USER_MODEL = 'users.customusers'
 
 # Application definition
 
+# INSTALLED_APPS = [
+#     'users',
+#     'django.contrib.admin',
+#     'django.contrib.auth',
+#     'django.contrib.contenttypes',
+#     'django.contrib.sessions',
+#     'django.contrib.messages',
+#     'django.contrib.staticfiles',
+#     'rest_framework',
+#     'corsheaders',
+# ]
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,8 +53,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'djongo',  # Add Djongo if using MongoDB
+    'organizations',# Add your app here!
     'users',
+    'rest_framework',
+    'rest_framework.authtoken',  # Enables token authentication
+    # 'users',
 ]
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -49,6 +74,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'tazkrty.urls'
@@ -87,10 +113,16 @@ DATABASES = {
         'ENGINE': 'djongo',
         'NAME': 'tazkarty',  # Database name in MongoDB
         'CLIENT': {
-            'host': 'mongodb+srv://mariam:12345@cluster0.p3v58.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+            # 'host': 'mongodb+srv://Hana:123hana456@cluster0.p3v58.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+            'host': 'mongodb+srv://mariam:12345@cluster0.p3v58.mongodb.net/tazkarty?retryWrites=true&w=majority',
             'authSource': 'admin',
         }
+    },
+    'users_db': {  # SQLite
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
+
 }
 
 
@@ -146,3 +178,10 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
