@@ -16,6 +16,7 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 from django.urls import path, include
+from .views import EventDetailAPI
 
 urlpatterns = [
     path('', views.homepage),
@@ -23,5 +24,6 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('events/', include('events.urls')),
     path('organizations/', include('organizations.urls')),
+    path('api/event/', EventDetailAPI.as_view(), name='event_detail_api')
     
 ]
