@@ -29,10 +29,32 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         return user
     
 
+from django.contrib.auth import authenticate
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from django.contrib.auth.models import User
+from rest_framework_simplejwt.tokens import RefreshToken
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = customusers
-        fields = ['id', 'username', 'password']
+User = get_user_model()
+
+class UserLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+
+    def validate(self, data):
+        email = data.get("email")
+        password = data.get("password")
+        
+        try:
+            user = User.objects.get(email=email)  # Get user by email
+        except User.DoesNotExist:
+            raise serializers.ValidationError("Invalid email or password.")
+        
+        if not user.check_password(password):  # Check password manually
+            raise serializers.ValidationError("Invalid email or password.")
+
+        refresh = RefreshToken.for_user(user)
+        return {
+            "email": user.email,
+            "username": user.username,
+            "token": str(refresh.access_token)
+        }
