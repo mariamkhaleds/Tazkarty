@@ -35,6 +35,17 @@ AUTH_USER_MODEL = 'users.customusers'
 
 # Application definition
 
+# INSTALLED_APPS = [
+#     'users',
+#     'django.contrib.admin',
+#     'django.contrib.auth',
+#     'django.contrib.contenttypes',
+#     'django.contrib.sessions',
+#     'django.contrib.messages',
+#     'django.contrib.staticfiles',
+#     'rest_framework',
+#     'corsheaders',
+# ]
 INSTALLED_APPS = [
     'users',
     'django.contrib.admin',
@@ -45,7 +56,19 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'events',
+    'djongo', 
+    'organizations',
+    'rest_framework.authtoken',
+    'booknow',
+    'eventdetails'
+    
 ]
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -5,6 +5,7 @@ app_name = 'users'
 
 urlpatterns = [
     path('register/', views.user_registration, name='register'),
+    path('login/', views.login_view, name='login'),
     #######path('insert_event/', views.insert_event, name="insert_event"),
     path('api-auth/', include('rest_framework.urls')),
       #path('history/<str:email>/', views.get_user_history, name="history"),
