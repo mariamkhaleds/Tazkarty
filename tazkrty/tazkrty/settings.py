@@ -59,9 +59,7 @@ INSTALLED_APPS = [
     'events',
     'djongo', 
     'organizations',
-    'rest_framework.authtoken',
-    'booknow',
-    'eventdetails'
+    'rest_framework.authtoken',  
     
 ]
 REST_FRAMEWORK = {
