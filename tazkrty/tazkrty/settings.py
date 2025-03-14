@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-DATABASE_ROUTERS = ['users.routers.AuthRouter'] 
+DATABASE_ROUTERS = ['tazkrty.routers.AuthRouter'] 
 
 
 AUTH_USER_MODEL = 'users.customusers'
