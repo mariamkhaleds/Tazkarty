@@ -35,6 +35,7 @@ def get_all_events(request):
             "location": event.get("location", "No Location"),
             "eventPhoto": event.get("eventPhoto", ""),
             "status": event.get("status", "No Status"),
+            "address": event.get("address", "No Address"),
         }
         formatted_events.append(formatted_event)
 
