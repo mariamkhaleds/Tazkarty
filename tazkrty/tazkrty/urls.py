@@ -16,12 +16,15 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 from django.urls import path, include
+from events.views import get_all_events
+from eventdetails.views import EventDetailAPI
 
 urlpatterns = [
     path('', views.homepage),
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
-    path('events/', include('events.urls')),
     path('organizations/', include('organizations.urls')),
+    path('events/', get_all_events, name='get_all_events'),
+    path('events/<str:eventname>/', EventDetailAPI.as_view(), name='event_detail_api'),
     
 ]

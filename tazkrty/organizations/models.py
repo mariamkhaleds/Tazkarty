@@ -18,6 +18,8 @@ class Event(models.Model):
     location = models.URLField()
     address = models.CharField(max_length=255)
     number_of_seats = models.IntegerField()
+    eventPhoto = models.URLField()   
+
 
     class Meta:
         db_table = "events"  # MongoDB collection name

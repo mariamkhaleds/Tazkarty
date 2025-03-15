@@ -8,6 +8,6 @@ class SampleAPI(APIView):
         data = {'message': 'Hello from Django API!'}
         return Response(data)
     
-# def homepage(request):
-#     return HttpResponse("Hello world! I'm a Home.")
-#     #return render(request, 'home.html')
+def homepage(request):
+    return HttpResponse("Hello world! I'm a Home.")
+    #return render(request, 'home.html')
