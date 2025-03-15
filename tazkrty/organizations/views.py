@@ -35,6 +35,7 @@ def insert_event(request):
         location = request.POST.get("location")
         address = request.POST.get("address")
         number_of_seats = request.POST.get("number_of_seats")
+        eventPhoto = request.POST.get("eventPhoto")
 
         # Convert date_time string to datetime object
         date_time = datetime.strptime(date_time, "%Y-%m-%dT%H:%M")
@@ -49,7 +50,8 @@ def insert_event(request):
             status=status,
             location=location,
             address=address,
-            number_of_seats=int(number_of_seats)
+            number_of_seats=int(number_of_seats),
+            eventPhoto=eventPhoto
         )
         event.save()
 
@@ -62,8 +64,18 @@ def insert_event(request):
 from django.shortcuts import render
 from pymongo import MongoClient
 from django.conf import settings
-client = MongoClient(settings.DATABASES['default']['CLIENT']['host'])
-db = client["tazkarty"]  # Your database name
+
+
+
+try:
+    client = MongoClient(settings.DATABASES['default']['CLIENT']['host'])
+except KeyError:
+    # Fallback or error handling
+    print("MongoDB client settings not found, using default connection")
+    client = MongoClient("localhost", 27017)
+#db_name = settings.DATABASES['default']['NAME']  
+db_name = 'tazkarty'  
+db = client[db_name]  # Your database name
 collection = db["bookings"]  # Your collection name
 
 def booking_history(request, email):
