@@ -18,7 +18,8 @@ class Event(models.Model):
     location = models.URLField()
     address = models.CharField(max_length=255)
     number_of_seats = models.IntegerField()
-    eventPhoto = models.URLField()   
+    eventPhoto = models.URLField(null=True, blank=True)
+  
 
 
     class Meta:

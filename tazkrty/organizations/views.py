@@ -82,4 +82,47 @@ def booking_history(request, email):
     # Fetch all bookings for a specific email
     bookings = list(collection.find({"useremail": email}, {"_id": 0}))  # Exclude _id
 
-    return render(request, 'organizations/history.html', {'bookings': bookings})
+    return JsonResponse({"history": bookings}, safe=False)
+
+# from django.shortcuts import render
+# from django.contrib.auth.decorators import login_required
+# from django.conf import settings
+# from pymongo import MongoClient
+# from django.http import JsonResponse
+# from datetime import datetime
+
+# # Connect to MongoDB
+# try:
+#     client = MongoClient(settings.DATABASES['default']['CLIENT']['host'])
+# except KeyError:
+#     client = MongoClient("localhost", 27017)  # Fallback to localhost
+
+# db = client['tazkarty']  # Database name
+# collection = db['bookings']  # Collection name
+
+# @login_required(login_url='/users/login/')
+# def booking_history(request):
+#     """ Fetch booking history for the logged-in user """
+    
+#     user = request.user  # Get the logged-in user
+#     print("User:", user)  # Debugging
+#     print("Is Superuser:", user.is_superuser)  # Debugging
+#     print("User Email:", user.email)  # Debugging
+
+#     if user.is_superuser:
+#         # إذا كان المستخدم Superuser، اجلب جميع الحجوزات
+#         bookings = list(collection.find({}, {"_id": 0}))
+#     else:
+#         # إذا كان المستخدم عاديًا، اجلب الحجوزات الخاصة ببريده الإلكتروني فقط
+#         bookings = list(collection.find({"useremail": user.email}, {"_id": 0}))
+
+#     # تحويل التواريخ إلى تنسيق مقروء
+#     for booking in bookings:
+#         if 'purchase_date' in booking:
+#             if isinstance(booking['purchase_date'], dict) and '$date' in booking['purchase_date']:
+#                 timestamp = int(booking['purchase_date']['$date']['$numberLong']) / 1000
+#                 booking['purchase_date'] = datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')
+#             elif isinstance(booking['purchase_date'], datetime):
+#                 booking['purchase_date'] = booking['purchase_date'].strftime('%Y-%m-%d %H:%M:%S')
+
+#     return render(request, 'organizations/history.html', {'bookings': bookings})
