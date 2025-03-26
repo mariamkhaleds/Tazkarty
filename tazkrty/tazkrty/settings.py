@@ -74,6 +74,22 @@ REST_FRAMEWORK = {
     ]
 }
 
+# CSRF_TRUSTED_ORIGINS = [
+#     "http://localhost:3000",
+#     "http://127.0.0.1:3000"
+# ]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",  # السماح لواجهة React
+# ]
+
+# CSRF_TRUSTED_ORIGINS = [
+#     "http://localhost:3000",
+# ]
+
+# CSRF_COOKIE_HTTPONLY = False  # يجب أن يكون False حتى يتمكن React من الوصول إليه
+# CSRF_COOKIE_SAMESITE = 'Lax'  # أو 'None' إذا كنت تستخدم HTTPS
+# CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]  # أضف الدومين الخاص بـ React
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -84,7 +100,15 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 ]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+]
+
+CORS_ALLOW_CREDENTIALS = True
 ROOT_URLCONF = 'tazkrty.urls'
 
 TEMPLATES = [

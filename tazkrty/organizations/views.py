@@ -24,40 +24,124 @@ from bson.json_util import dumps
 
 # Create your views here.
 
-def insert_event(request):
-    if request.method == "POST":
-        eventname = request.POST.get("eventname")
-        organizer_name = request.POST.get("organizer_name")
-        title = request.POST.get("title")
-        description = request.POST.get("description")
-        date_time = request.POST.get("date_time")
-        status = request.POST.get("status")
-        location = request.POST.get("location")
-        address = request.POST.get("address")
-        number_of_seats = request.POST.get("number_of_seats")
-        eventPhoto = request.POST.get("eventPhoto")
+# def insert_event(request):
+#     if request.method == "POST":
+#         eventname = request.POST.get("eventname")
+#         organizer_name = request.POST.get("organizer_name")
+#         title = request.POST.get("title")
+#         description = request.POST.get("description")
+#         date_time = request.POST.get("date_time")
+#         status = request.POST.get("status")
+#         location = request.POST.get("location")
+#         address = request.POST.get("address")
+#         number_of_seats = request.POST.get("number_of_seats")
+#         eventPhoto = request.POST.get("eventPhoto")
 
-        # Convert date_time string to datetime object
-        date_time = datetime.strptime(date_time, "%Y-%m-%dT%H:%M")
+#         # Convert date_time string to datetime object
+#         date_time = datetime.strptime(date_time, "%Y-%m-%dT%H:%M")
 
-        # Save to database
-        event = Event(
-            eventname=eventname,
-            organizer_name=organizer_name,
-            title=title,
-            description=description,
-            date_time=date_time,
-            status=status,
-            location=location,
-            address=address,
-            number_of_seats=int(number_of_seats),
-            eventPhoto=eventPhoto
-        )
-        event.save()
+#         # Save to database
+#         event = Event(
+#             eventname=eventname,
+#             organizer_name=organizer_name,
+#             title=title,
+#             description=description,
+#             date_time=date_time,
+#             status=status,
+#             location=location,
+#             address=address,
+#             number_of_seats=int(number_of_seats),
+#             eventPhoto=eventPhoto
+#         )
+#         event.save()
 
-        return render(request, "organizations/Add_Event.html", {"message": "Event inserted successfully!"})
+#         return render(request, "organizations/Add_Event.html", {"message": "Event inserted successfully!"})
 
-    return render(request, "organizations/Add_Event.html")
+#     return render(request, "organizations/Add_Event.html")
+
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Event
+from .serializers import EventSerializer
+
+# @api_view(['POST'])
+# def insert_event(request):
+#     serializer = EventSerializer(data=request.data)
+#     if serializer.is_valid():
+#         serializer.save()
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)
+#     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# @api_view(['GET'])
+# def get_events(request):
+#     events = Event.objects.all().values()
+#     return JsonResponse(list(events), safe=False)
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from .models import Event
+from .serializers import EventSerializer
+from rest_framework.permissions import AllowAny
+
+class InsertEventView(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request, *args, **kwargs):
+        serializer = EventSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# from django.http import JsonResponse
+# from datetime import datetime
+# from .models import Event
+# from bson import ObjectId  # استيراد ObjectId من bson
+# from django.views.decorators.csrf import csrf_exempt
+
+# @csrf_exempt
+# def insert_event(request):
+#     if request.method == "POST":
+#         try:
+#             eventname = request.POST.get("eventname")
+#             organizer_name = request.POST.get("organizer_name")
+#             title = request.POST.get("title")
+#             description = request.POST.get("description")
+#             date_time = request.POST.get("date_time")
+#             status = request.POST.get("status")
+#             location = request.POST.get("location")
+#             address = request.POST.get("address")
+#             number_of_seats = request.POST.get("number_of_seats")
+#             eventPhoto = request.POST.get("eventPhoto")
+
+#             date_time = datetime.strptime(date_time, "%Y-%m-%dT%H:%M")
+
+#             event = Event(
+#                 eventname=eventname,
+#                 organizer_name=organizer_name,
+#                 title=title,
+#                 description=description,
+#                 date_time=date_time,
+#                 status=status,
+#                 location=location,
+#                 address=address,
+#                 number_of_seats=int(number_of_seats),
+#                 eventPhoto=eventPhoto
+#             )
+#             event.save()
+
+#             # ✅ تحويل _id إلى string قبل إرساله في JSON
+#             return JsonResponse({
+#                 "message": "Event inserted successfully!",
+#                 "event_id": str(event._id)  # تحويل ObjectId إلى string
+#             })
+
+#         except Exception as e:
+#             return JsonResponse({"error": str(e)}, status=500)
+
+#     return JsonResponse({"error": "Invalid request method"}, status=400)
 
 
 
