@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+
 #from mongoose import "mongoose"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -64,10 +65,30 @@ INSTALLED_APPS = [
     
 ]
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',  # Uses tokens for API auth
+        'rest_framework.authentication.SessionAuthentication',  # Uses Django sessions
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',  # Requires login
+    ]
 }
+
+# CSRF_TRUSTED_ORIGINS = [
+#     "http://localhost:3000",
+#     "http://127.0.0.1:3000"
+# ]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",  # السماح لواجهة React
+# ]
+
+# CSRF_TRUSTED_ORIGINS = [
+#     "http://localhost:3000",
+# ]
+
+# CSRF_COOKIE_HTTPONLY = False  # يجب أن يكون False حتى يتمكن React من الوصول إليه
+# CSRF_COOKIE_SAMESITE = 'Lax'  # أو 'None' إذا كنت تستخدم HTTPS
+# CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]  # أضف الدومين الخاص بـ React
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -79,7 +100,15 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 ]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+]
+
+CORS_ALLOW_CREDENTIALS = True
 ROOT_URLCONF = 'tazkrty.urls'
 
 TEMPLATES = [
@@ -116,7 +145,8 @@ DATABASES = {
         'ENGINE': 'djongo',
         'NAME': 'tazkarty',  # Database name in MongoDB
         'CLIENT': {
-            'host': 'mongodb+srv://Hana:123hana456@cluster0.p3v58.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+            # 'host': 'mongodb+srv://Hana:123hana456@cluster0.p3v58.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+            'host': 'mongodb+srv://mariam:12345@cluster0.p3v58.mongodb.net/tazkarty?retryWrites=true&w=majority',
             'authSource': 'admin',
         }
     },
