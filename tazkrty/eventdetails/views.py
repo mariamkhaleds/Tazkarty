@@ -5,14 +5,14 @@ from pymongo import MongoClient
 from datetime import datetime
 from django.http import JsonResponse
 from django.conf import settings
+
 class EventDetailAPI(APIView):
     def get(self, request, eventname):
         try:
-            # Connect to MongoDB
+           
             client = MongoClient(settings.DATABASES['default']['CLIENT']['host'])
             db = client['tazkarty']
             collection = db['events']
-
 
             # Log the eventname being fetched
             print(f"Fetching event with eventname: {eventname}")
@@ -20,7 +20,7 @@ class EventDetailAPI(APIView):
             # Fetch the event
             event = collection.find_one({"eventname": eventname}, {'_id': 0})  # Exclude _id field
             if not event:
-             return JsonResponse({"error": "Event not found"}, status=404)
+                return JsonResponse({"error": "Event not found"}, status=404)
 
             # Handle the date_time field
             if isinstance(event['date_time'], datetime):
@@ -29,11 +29,13 @@ class EventDetailAPI(APIView):
                 timestamp = int(event['date_time']['$date']['$numberLong']) / 1000
                 date_time = datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')
 
-            # Handle the number_of_seats field
-            if isinstance(event['number_of_seats'], dict):
-                number_of_seats = int(event['number_of_seats']['$numberInt'])
-            else:
-                number_of_seats = event['number_of_seats']
+           
+            number_of_seats = None
+            if 'number_of_seats' in event:
+                if isinstance(event['number_of_seats'], dict):
+                    number_of_seats = int(event['number_of_seats']['$numberInt'])
+                else:
+                    number_of_seats = event['number_of_seats']
 
             # Format the data
             event_data = {
@@ -45,10 +47,13 @@ class EventDetailAPI(APIView):
                 'status': event['status'],
                 'location': event['location'],
                 'address': event['address'],
-                'number_of_seats': number_of_seats,
                 'eventPhoto': event['eventPhoto'],
-
+                'ticketCategories': event.get('ticketCategories', [])  # Include ticket categories
             }
+
+            # Add number_of_seats if it exists
+            if number_of_seats is not None:
+                event_data['number_of_seats'] = number_of_seats
 
             return Response(event_data, status=status.HTTP_200_OK)
 
