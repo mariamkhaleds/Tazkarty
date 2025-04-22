@@ -1,17 +1,21 @@
-class AuthRouter:
 
-    # route_app_labels = {'auth', 'contenttypes', 'admin', 'sessions', 'users'}
-    route_app_labels = {'auth', 'admin', 'users'}
+class AuthRouter:
+    route_app_labels = {'auth', 'admin', 'users', 'sessions','delete'}
 
     def db_for_read(self, model, **hints):
-        if model._meta.app_label == 'users':
+        print(f"Read: {model._meta.app_label} -> {model._meta.db_table} -> {model._meta.app_config.label}")
+        if model._meta.app_label in self.route_app_labels:
+            print(f"Read: {model._meta.app_label} -> users_db")
             return 'users_db'
+        print(f"Read: {model._meta.app_label} -> default")
         return 'default'
 
-
     def db_for_write(self, model, **hints):
-        if model._meta.app_label == 'users':
+        print(f"Write: {model._meta.app_label} -> {model._meta.db_table} -> {model._meta.app_config.label}")
+        if model._meta.app_label in self.route_app_labels:
+            print(f"Write: {model._meta.app_label} -> users_db")
             return 'users_db'
+        print(f"Write: {model._meta.app_label} -> default")
         return 'default'
 
     def allow_relation(self, obj1, obj2, **hints):
@@ -24,17 +28,7 @@ class AuthRouter:
         return None
 
     def allow_migrate(self, db, app_label, model_name=None, **hints):
-        # Critical part: direct migrations to the right database
-        if app_label == 'users':
+        print(f"Migrate: {app_label} -> {db == 'users_db'}")
+        if app_label in self.route_app_labels:
             return db == 'users_db'
         return db == 'default'
-
-
-
-    def allow_syncdb(self, db, model):
- 
-        if db == 'users_db' and model._meta.app_label in self.route_app_labels:
-            return True
-        elif db == 'default' and model._meta.app_label not in self.route_app_labels:
-            return True
-        return None
