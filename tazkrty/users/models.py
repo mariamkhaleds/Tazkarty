@@ -7,7 +7,9 @@ class customusers(AbstractUser):
         ('organization', 'Organization'), 
     )
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='user')
-
+    class Meta:
+        app_label = 'users'
+        
     def __str__(self):
         return self.username
 
