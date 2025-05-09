@@ -22,8 +22,8 @@ from eventdetails.views import EventDetailAPI
 urlpatterns = [
     path('', views.homepage),
     path('admin/', admin.site.urls),
-    path('users/', include('users.urls')),
-    path('organizations/', include('organizations.urls')),
+    path('users/', include('users.urls',namespace='users')),
+    path('organizations/', include('organizations.urls',namespace='organizations')),
     path('events/', get_all_events, name='get_all_events'),
     path('events/<str:eventname>/', EventDetailAPI.as_view(), name='event_detail_api'),
     
