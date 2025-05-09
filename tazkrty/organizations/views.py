@@ -146,7 +146,7 @@ class InsertEventView(APIView):
 
 
 from django.shortcuts import render
-from pymongo import MongoClient
+from pymongo import MongoClient     
 from django.conf import settings
 
 
