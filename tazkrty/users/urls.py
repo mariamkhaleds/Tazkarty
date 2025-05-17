@@ -4,6 +4,8 @@ from django.urls import path
 from .views import UserLoginView
 from .views import user_registration
 from rest_framework_simplejwt.views import TokenRefreshView
+from .views import get_user_profile
+
 app_name = 'users'
 
 urlpatterns = [
@@ -11,4 +13,5 @@ urlpatterns = [
     path('login/', UserLoginView.as_view(), name='login'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api-auth/', include('rest_framework.urls')),
+     path("profile/<str:email>/", get_user_profile, name="user-profile"),
 ]    

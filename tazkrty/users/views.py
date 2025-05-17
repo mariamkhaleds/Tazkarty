@@ -92,3 +92,18 @@ class UserLoginView(APIView):
 """""
 
 """""
+
+
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from .models import customusers
+from .serializers import UserProfileSerializer
+from django.shortcuts import get_object_or_404
+
+@api_view(['GET'])
+def get_user_profile(request, email):
+    user = get_object_or_404(customusers, email=email)
+    serializer = UserProfileSerializer(user)
+    return Response(serializer.data, status=status.HTTP_200_OK)

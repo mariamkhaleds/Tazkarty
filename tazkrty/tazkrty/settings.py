@@ -28,10 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-DATABASE_ROUTERS = ['users.routers.AuthRouter'] 
-
-
-AUTH_USER_MODEL = 'users.customusers'
 
 # Application definition
 
@@ -116,8 +112,7 @@ WSGI_APPLICATION = 'tazkrty.wsgi.application'
 #################################################################
 # i changed in the below lines for testing if it makes errors you can try to remove them , not the Database :)
 #but you can try to remove the Test from the database but please don't delete the code just comment it ,to still have this version of code 
-
-#################################################################
+'''
 
 TEST_NON_SERIALIZED_APPS = ['users']
 
@@ -150,6 +145,37 @@ MIGRATION_MODULES = {
     'admin': None,
     'sessions': None,
     'users': None,
+}
+'''
+#################################################################
+
+
+DATABASE_ROUTERS = ['users.routers.UsersRouter'] 
+
+AUTH_USER_MODEL = 'users.customusers'
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'djongo',
+        'NAME': 'tazkarty',
+        'CLIENT': {
+            'host': 'mongodb+srv://Hana:123hana456@cluster0.p3v58.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+            'authSource': 'admin',
+        },
+        'TEST': {
+            'NAME': 'test_tazkarty',
+            'DEPENDENCIES': [],
+            'MIGRATE': False,  # Keep this as False for Djongo tests
+        }
+    },
+    'users_db': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+        'TEST': {
+            'NAME': ':memory:', # This is for running tests in memory, usually fine
+            'DEPENDENCIES': [],
+        }
+    }
 }
 
 ######################################################################################

@@ -1,20 +1,19 @@
-#!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-import django  
+import django 
 
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tazkrty.settings')
 
-    if 'createsuperuser' in sys.argv:
-        from django.conf import settings
-        settings.DATABASES['default'] = settings.DATABASES['users_db']
-        django.setup() 
-        from django.core.management import execute_from_command_line
-        execute_from_command_line(sys.argv)
-        return
+    # if 'createsuperuser' in sys.argv:
+    #     from django.conf import settings
+    #     settings.DATABASES['default'] = settings.DATABASES['users_db']
+    #     django.setup()
+    #     from django.core.management import execute_from_command_line
+    #     execute_from_command_line(sys.argv)
+    #     return
 
     try:
         from django.core.management import execute_from_command_line

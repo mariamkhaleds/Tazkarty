@@ -3,18 +3,26 @@ from django.db import models
 
 class customusers(AbstractUser):
     ROLE_CHOICES = (
-        ('user', 'User'), 
-        ('organization', 'Organization'), 
+        ('user', 'User'),
+        ('organization', 'Organization'),
     )
+
+    GENDER_CHOICES = (
+        ('male', 'Male'),
+        ('female', 'Female'),
+    )
+
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='user')
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, blank=True, null=True)
+    country = models.CharField(max_length=50, blank=True, null=True)
+    date_of_birth = models.DateField(blank=True, null=True)
+    
     class Meta:
         app_label = 'users'
-        
+
     def __str__(self):
         return self.username
-
-
-
 
 
 

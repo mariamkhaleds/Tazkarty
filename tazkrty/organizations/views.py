@@ -82,4 +82,4 @@ def booking_history(request, email):
     # Fetch all bookings for a specific email
     bookings = list(collection.find({"useremail": email}, {"_id": 0}))  # Exclude _id
 
-    return render(request, 'organizations/history.html', {'bookings': bookings})
+    return JsonResponse({"history": bookings}, safe=False)
