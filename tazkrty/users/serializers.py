@@ -1,11 +1,6 @@
-from django.forms import ValidationError
 from rest_framework import serializers
-from django.contrib.auth.models import User, AbstractUser
 from django.contrib.auth.password_validation import validate_password
-from django.db import models
-from .models import customusers
-
-
+from .models import customusers 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, validators=[validate_password])
@@ -13,8 +8,13 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = customusers
-        fields = ('username', 'email', 'password', 'password2','role')
-        extra_kwargs = {'password': {'write_only': True}}
+        fields = (
+            'username', 'email', 'password', 'password2', 
+            'role', 'phone_number', 'gender', 'country'
+        )
+        extra_kwargs = {
+            'password': {'write_only': True},
+        }
 
     def validate(self, data):
         if data['password'] != data['password2']:
@@ -23,11 +23,13 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data.pop('password2')
-        user = customusers.objects.create_user(**validated_data)
-        user.set_password(validated_data['password'])
+        password = validated_data.pop('password')
+        user = customusers(**validated_data)
+        user.set_password(password)
         user.save()
         return user
-    
+
+
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
@@ -57,3 +59,26 @@ class UserLoginSerializer(serializers.Serializer):
             "username": user.username,
             "token": str(refresh.access_token)
         }
+    
+
+
+from rest_framework import serializers
+from .models import customusers
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    memberSince = serializers.SerializerMethodField()
+
+    class Meta:
+        model = customusers
+        fields = (
+            'username',
+            'email',
+            'phone_number',
+            'gender',
+            'country',
+            'memberSince'
+        )
+
+    def get_memberSince(self, obj):
+        return obj.date_joined.strftime("%B %Y") if obj.date_joined else "N/A"
+
